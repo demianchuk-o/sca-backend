@@ -11,6 +11,6 @@ class Target(Base):
     country = Column(String)
     notes = Column(Text, nullable=True)
     complete = Column(Boolean, default=False)
-    mission_id = Column(Integer, ForeignKey("mission.id"))
+    mission_id = Column(Integer, ForeignKey("missions.id"))
 
     mission = relationship("Mission", back_populates="targets")

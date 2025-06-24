@@ -10,5 +10,5 @@ class Mission(Base):
     complete = Column(Boolean, default=False)
     cat_id = Column(Integer, ForeignKey("cats.id"), unique=True, nullable=True)
 
-    cat = relationship("Cat", back_populates="cat")
+    cat = relationship("Cat", back_populates="mission")
     targets = relationship("Target", back_populates="mission", cascade="all, delete-orphan")

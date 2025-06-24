@@ -10,3 +10,5 @@ class Cat(Base):
     years_of_experience = Column(Integer, nullable=False)
     breed = Column(String, nullable=False)
     salary = Column(Float, nullable=False)
+
+    mission = relationship("Mission", back_populates="cat", uselist=False)

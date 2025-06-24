@@ -1,12 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import defer
 
+from app.api.api import api_router
 from app.db.session import engine
 from app.db.base_class import Base
 
-Base.metadata.create_all(bind=engine)
+def init_db():
+    """Initialize the database."""
+    Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Spy Cat Agency API")
+def get_app():
+    """Create and return the FastAPI application instance."""
+    app = FastAPI(title="Spy Cat Agency API")
+    app.include_router(api_router)
+    return app
+
+app = get_app()
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,6 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", status_code=200)
-def read_root():
-    return {"status": "ok", "message": "Welcome to the Spy Cat Agency API!"}
+@app.on_event("startup")
+async def startup_event():
+    init_db()
